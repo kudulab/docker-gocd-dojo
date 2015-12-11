@@ -16,6 +16,7 @@ RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash - && \
  apt-get install --yes nodejs && update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
 RUN mkdir -p /ide/work && chown ide:ide /ide/work
+RUN mkdir -p /ide/output && chown ide:ide /ide/output
 RUN su - ide -c "git clone https://github.com/gocd/gocd.git /ide/work"
 RUN su - ide -c "touch /ide/work/.ide-mark"
 

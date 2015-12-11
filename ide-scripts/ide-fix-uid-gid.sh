@@ -9,7 +9,14 @@
 
 # This is the directory we expect to be mounted as docker volume.
 # From that directory we know uid and gid.
-DIRECTORY=/ide/work
+if [ -f "/ide/work/.ide-mark" ]; then
+  # /ide/work is not mounted as docker volume, so its uid and gid hasn't changed
+  # then we can assume that user is building from remote sources
+  # and he will want proper owner in output
+  DIRECTORY=/ide/output
+else
+  DIRECTORY=/ide/work
+fi
 OWNER_USERNAME=ide
 OWNER_GROUPNAME=ide
 
@@ -62,6 +69,6 @@ chown $NEWUID:$NEWGID -R /home/ide
 # besides, when /ide/work is very big, chown would take much time
 # unless it is not mounted and uid has changed to match with identity or output directory
 if [ -f "$DIRECTORY/.ide-mark" ]; then
-  echo "$DIRECTORY is not mounted as docker volume"
+  echo "$DIRECTORY is not mounted as docker volume. Fixing current content owner"
   chown $NEWUID:$NEWGID -R /ide/work
 fi

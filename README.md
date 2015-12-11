@@ -92,7 +92,3 @@ Thus declaring exact image which is a good enough to build and develop gocd.
 ```
 ide go-build-installer deb win
 ```
-
-## TODO
-
- * fix permissions of output directory just like work directory
