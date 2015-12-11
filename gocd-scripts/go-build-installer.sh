@@ -73,7 +73,7 @@ INSTALLERS_NEEDED=($(echo "${INSTALLERS_NEEDED[@]}" | tr -s ' ' '\n' | sort -r))
 echo -e "[01;34mRunning for installer targets: ${INSTALLERS_NEEDED[@]}[00m"
 
 cd /ide/work
-$(dirname $0)/go-compile.sh
+$(dirname $0)/go-compile
 tools/bin/go.jruby -J-Xmx2048m -J-Xms1024m -S buildr ${INSTALLERS_NEEDED[@]} ratchet=no test=no DO_NOT_INSTRUMENT_FOR_COVERAGE=true --trace
 
 mkdir -p /ide/output
