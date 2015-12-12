@@ -72,3 +72,6 @@ if [ -f "$DIRECTORY/.ide-mark" ]; then
   echo "$DIRECTORY is not mounted as docker volume. Fixing current content owner"
   chown $NEWUID:$NEWGID -R /ide/work
 fi
+
+# ensure that ide will be able to copy packages in the end
+chown $NEWUID:$NEWGID /ide/output
