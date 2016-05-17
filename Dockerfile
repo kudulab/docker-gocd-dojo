@@ -10,7 +10,7 @@ RUN useradd -d /home/ide -p pass -s /bin/bash -u 1000 -m ide &&\
     chown ide:ide -R /home/ide
 
 RUN apt-get update && apt-get install -y -q \
- fakeroot git maven nsis openjdk-7-jdk rpm unzip zip
+ fakeroot git maven nsis openjdk-7-jdk rpm unzip zip mercurial
 # install nodejs, update-alternatives is needed on ubuntu to enable command 'node'
 RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash - && \
  apt-get install --yes nodejs && update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
