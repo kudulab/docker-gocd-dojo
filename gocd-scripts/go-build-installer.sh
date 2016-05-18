@@ -37,6 +37,11 @@ while [ "$#" -ge 1 ]; do
   case "$1" in
     win|windows)
       INSTALLERS_NEEDED+=(cruise:pkg:windows)
+      if [ -z ${WINDOWS_JRE_LOCATION+x} ]; then
+        echo "Please set WINDOWS_JRE_LOCATION; falling back to mirrors.go.cd";
+        export WINDOWS_JRE_LOCATION='https://mirrors.go.cd/local/jre-7u9-windows-i586.tar.gz'
+      else
+        echo "WINDOWS_JRE_LOCATION='$WINDOWS_JRE_LOCATION'"; fi
       ;;
     osx|mac)
       INSTALLERS_NEEDED+=(cruise:pkg:osx)
@@ -62,8 +67,6 @@ if [ "$(echo "${INSTALLERS_NEEDED[@]}" | grep -q '^$'; echo $?)" = "0" ]; then
   help_and_exit "No installers requested"
 fi
 
-
-export WINDOWS_JRE_LOCATION='https://download.go.cd/local/jre-7u9-windows-i586.tar.gz'
 export DISABLE_WIN_INSTALLER_LOGGING='true'
 export REPO # Used by go-compile.sh
 export BRANCH # Used by go-compile.sh

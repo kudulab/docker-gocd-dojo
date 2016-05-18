@@ -79,6 +79,10 @@ docker cp gocd-ide:/ide/output local-dir
 docker rm gocd-ide
 ```
 
+#### Building windows
+
+To create windows package `WINDOWS_JRE_LOCATION` must be set.
+
 ## Usage with IDE
 
 `gocd` repository should contain `IdeFile` with
