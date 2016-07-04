@@ -10,10 +10,16 @@ RUN useradd -d /home/ide -p pass -s /bin/bash -u 1000 -m ide &&\
     chown ide:ide -R /home/ide
 
 RUN apt-get update && apt-get install -y -q \
- fakeroot git maven nsis openjdk-7-jdk rpm unzip zip mercurial
+ fakeroot git maven nsis openjdk-7-jdk rpm unzip zip mercurial rake subversion
 # install nodejs, update-alternatives is needed on ubuntu to enable command 'node'
 RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash - && \
  apt-get install --yes nodejs && update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
+
+# install perforce/helix
+RUN wget -qO - https://package.perforce.com/perforce.pubkey | sudo apt-key add - && \
+ echo 'deb http://package.perforce.com/apt/ubuntu trusty release' > /etc/apt/sources.list.d/perforce.list && \
+ apt-get update && \
+ apt-get install -y perforce-server perforce-cli perforce-p4dctl perforce-p4zk
 
 RUN mkdir -p /ide/work && chown ide:ide /ide/work
 RUN mkdir -p /ide/output && chown ide:ide /ide/output
