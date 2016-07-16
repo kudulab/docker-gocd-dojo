@@ -19,4 +19,4 @@ else
   git reset --hard FETCH_HEAD
 fi
 
-./bn clean cruise:prepare
+gradle clean prepare fatJar

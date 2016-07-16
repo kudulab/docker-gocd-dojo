@@ -8,9 +8,12 @@ Most gocd scripts are based on [gocd-docker](https://github.com/gocd/gocd-docker
 This image allows to build and partially test gocd. It can be used in CI system
 or as a base for developer workstation.
 
-This is also a very early preview of the generic IDE concept that we are working on.
-It aims to standardize executing build system jobs in docker containers.
-That's why some paths, users and scripts may seem a little weird.
+[IDE](https://github.com/ai-traders/ide) stands for Isolated development environment.
+This image conforms to *some* of the ideas in IDE project. Basically if you have
+a local docker host and the short `ide` script, then you can build GoCD with
+```bash
+ide go-build-installer
+```
 
 ## Usage with bare docker
 
@@ -85,7 +88,7 @@ To create windows package `WINDOWS_JRE_LOCATION` must be set.
 
 ## Usage with IDE
 
-`gocd` repository should contain `IdeFile` with
+`gocd` repository should contain `Idefile` with
 ```
 IDE_DOCKER_IMAGE=tomzo/gocd-ide:TAG
 ```

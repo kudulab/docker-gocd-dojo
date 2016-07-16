@@ -15,6 +15,14 @@ RUN apt-get update && apt-get install -y -q \
 RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash - && \
  apt-get install --yes nodejs && update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
+# install gradle, so that gradlew is not needed.
+RUN add-apt-repository -y ppa:cwchien/gradle && \
+  apt-get update && \
+  apt-get install -y gradle
+
+RUN apt-get install -y ruby-dev build-essential && \
+  gem install fpm
+
 # install perforce/helix
 RUN wget -qO - https://package.perforce.com/perforce.pubkey | sudo apt-key add - && \
  echo 'deb http://package.perforce.com/apt/ubuntu trusty release' > /etc/apt/sources.list.d/perforce.list && \

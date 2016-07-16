@@ -31,29 +31,47 @@ EOF
   exit 1
 }
 
+# Installers tasks
+# ----------------
+# agentGenericZip - Build the go-agent zip installer
+# agentOSXZip - Build the go-agent osx package
+# agentPackageDeb - Build the go-agent deb package
+# agentPackageRpm - Build the go-agent rpm package
+# agentWindowsExe - Build the go-agent windows installer
+# serverGenericZip - Build the go-server zip installer
+# serverOSXZip - Build the go-server osx package
+# serverPackageDeb - Build the go-server deb package
+# serverPackageRpm - Build the go-server rpm package
+# serverWindowsExe - Build the go-server windows installer
+
 # Parse arguments.
 declare -a INSTALLERS_NEEDED
 while [ "$#" -ge 1 ]; do
   case "$1" in
     win|windows)
-      INSTALLERS_NEEDED+=(cruise:pkg:windows)
-      if [ -z ${WINDOWS_JRE_LOCATION+x} ]; then
-        echo "Please set WINDOWS_JRE_LOCATION; falling back to mirrors.go.cd";
-        export WINDOWS_JRE_LOCATION='https://mirrors.go.cd/local/jre-7u9-windows-i586.tar.gz'
+      INSTALLERS_NEEDED+=(serverWindowsExe)
+      INSTALLERS_NEEDED+=(agentWindowsExe)
+      if [ -z ${WINDOWS_JRE_URL+x} ]; then
+        echo "Please set WINDOWS_JRE_URL; falling back to mirrors.go.cd";
+        export WINDOWS_JRE_URL='https://mirrors.go.cd/local/jre-7u9-windows-i586.tar.gz'
       else
-        echo "WINDOWS_JRE_LOCATION='$WINDOWS_JRE_LOCATION'"; fi
+        echo "WINDOWS_JRE_URL='$WINDOWS_JRE_URL'"; fi
       ;;
     osx|mac)
-      INSTALLERS_NEEDED+=(cruise:pkg:osx)
+      INSTALLERS_NEEDED+=(serverOSXZip)
+      INSTALLERS_NEEDED+=(agentOSXZip)
       ;;
     rpm|redhat|centos)
-      INSTALLERS_NEEDED+=(cruise:pkg:redhat)
+      INSTALLERS_NEEDED+=(agentPackageRpm)
+      INSTALLERS_NEEDED+=(serverPackageRpm)
       ;;
     deb|debian)
-      INSTALLERS_NEEDED+=(cruise:pkg:debian)
+      INSTALLERS_NEEDED+=(serverPackageDeb)
+      INSTALLERS_NEEDED+=(agentPackageDeb)
       ;;
     zip)
-      INSTALLERS_NEEDED+=(cruise:pkg:zip)
+      INSTALLERS_NEEDED+=(agentGenericZip)
+      INSTALLERS_NEEDED+=(serverGenericZip)
       ;;
     *)
       help_and_exit "Invalid installer name: $1"
@@ -71,14 +89,9 @@ export DISABLE_WIN_INSTALLER_LOGGING='true'
 export REPO # Used by go-compile.sh
 export BRANCH # Used by go-compile.sh
 
-# To handle a bug, when redhat has to be specified before debian. Otherwise it fails. :(
-INSTALLERS_NEEDED=($(echo "${INSTALLERS_NEEDED[@]}" | tr -s ' ' '\n' | sort -r))
-echo -e "[01;34mRunning for installer targets: ${INSTALLERS_NEEDED[@]}[00m"
-
 cd /ide/work
 $(dirname $0)/go-compile
-tools/bin/jruby -J-Xmx2048m -J-Xms1024m -S buildr ${INSTALLERS_NEEDED[@]} ratchet=no test=no DO_NOT_INSTRUMENT_FOR_COVERAGE=true --trace
+gradle ${INSTALLERS_NEEDED[@]}
 
 mkdir -p /ide/output
-cp -vR /ide/work/target/pkg/* /ide/output
-rm -f /ide/output/install-server.sh
+cp -vR /ide/work/installers/target/distributions/* /ide/output
