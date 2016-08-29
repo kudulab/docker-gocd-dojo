@@ -91,7 +91,7 @@ export BRANCH # Used by go-compile.sh
 
 cd /ide/work
 $(dirname $0)/go-compile
-gradle ${INSTALLERS_NEEDED[@]}
+gradle ${INSTALLERS_NEEDED[@]} versionFile
 
 mkdir -p /ide/output
 cp -vR /ide/work/installers/target/distributions/* /ide/output
