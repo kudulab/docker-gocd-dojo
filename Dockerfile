@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.17
+FROM openjdk:8-jdk
 MAINTAINER Tomasz Sętkowski <tom@ai-traders.com>
 
 COPY ide-scripts/* /usr/bin/
@@ -10,24 +10,22 @@ RUN useradd -d /home/ide -p pass -s /bin/bash -u 1000 -m ide &&\
     chown ide:ide -R /home/ide
 
 RUN apt-get update && apt-get install -y -q \
- fakeroot git maven nsis openjdk-7-jdk rpm unzip zip mercurial rake subversion wget
+ fakeroot git nsis rpm unzip zip mercurial rake subversion wget
 # install nodejs, update-alternatives is needed on ubuntu to enable command 'node'
 RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash - && \
  apt-get install --yes nodejs && update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
 # install gradle, so that gradlew is not needed.
-RUN add-apt-repository -y ppa:cwchien/gradle && \
-  apt-get update && \
-  apt-get install -y gradle
+ENV GRADLE_VERSION 3.1
+ENV GRADLE_HOME /usr/lib/gradle/gradle-${GRADLE_VERSION}
+RUN cd /tmp &&\
+  wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip &&\
+  unzip gradle-${GRADLE_VERSION}-bin.zip && mv gradle-${GRADLE_VERSION}/ /usr/lib/ &&\
+  rm gradle-${GRADLE_VERSION}-bin.zip &&\
+  ln -s /usr/lib/gradle-${GRADLE_VERSION}/bin/gradle /usr/bin/gradle
 
 RUN apt-get install -y ruby-dev build-essential && \
   gem install fpm
-
-# install perforce/helix
-RUN wget -qO - https://package.perforce.com/perforce.pubkey | sudo apt-key add - && \
- echo 'deb http://package.perforce.com/apt/ubuntu trusty release' > /etc/apt/sources.list.d/perforce.list && \
- apt-get update && \
- apt-get install -y perforce-server perforce-cli perforce-p4dctl perforce-p4zk
 
 RUN mkdir -p /ide/work && chown ide:ide /ide/work
 RUN mkdir -p /ide/output && chown ide:ide /ide/output

@@ -37,17 +37,17 @@ In commands below you can find `/ide/identity` mount. It is only required
 
 ### Build gocd from local workspace
 
-Let's assume `~/code/gocd` contains a checkout of [gocd](https://github.com/gocd/gocd)
+Let's assume `~/code/open/go/gocd` contains a checkout of [gocd](https://github.com/gocd/gocd)
 or a fork of it.
 
 Then you can run **any** gocd build command with:
 ```
-docker run -ti --rm -v ~/code/gocd:/ide/work -v ~:/ide/identity:ro tomzo/gocd-ide COMMAND
+docker run -ti --rm -v ~/code/open/go/gocd:/ide/work -v ~:/ide/identity:ro tomzo/gocd-ide COMMAND
 ```
 In non-interactive environments you should skip `-ti` option.
 
 Any compilation or test results will be available locally in
- the mounted directory `~/code/gocd`
+ the mounted directory `~/code/open/go/gocd`
 
 ### Build from remote git sources
 
@@ -57,7 +57,7 @@ There are 3 environment variables you can use:
  * `BRANCH` - default is master. e.g. develop
  * `COMMIT` - any commit in format that `git` CLI accepts. There is no default.
 
-You should skip mounting local volume with `-v ~/code/gocd:/ide/work`
+You should skip mounting local volume with `-v ~/code/open/go/gocd:/ide/work`
 
 You can run build commands with
 ```
