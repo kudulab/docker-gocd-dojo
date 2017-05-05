@@ -48,7 +48,10 @@ Any compilation or test results will be available locally in
 
 #### Building windows packages
 
-To create windows package `WINDOWS_JRE_LOCATION` must be set.
+To create windows package bundled oracle jre is used.
+You set your own URLs for download with
+ * WINDOWS_64BIT_JRE_URL
+ * WINDOWS_32BIT_JRE_URL
 
 ## Usage with IDE
 

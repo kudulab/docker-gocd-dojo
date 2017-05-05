@@ -32,7 +32,6 @@ RUN mkdir -p /ide/work && chown ide:ide /ide/work
 
 RUN su - ide -c "git clone --depth 1 https://github.com/gocd/gocd.git /ide/work"
 
-ENV WINDOWS_JRE_URL='https://mirrors.go.cd/local/jre-7u9-windows-i586.tar.gz'
 ENV ORACLE_JRE_LICENSE_AGREE=1
 # This will download all dependencies to /home/ide/ so that they can stay cached in image
 RUN su - ide -c "cd /ide/work && gradle clean prepare fatJar agentWindows64bitExe serverPackageDeb agentPackageDeb versionFile"
