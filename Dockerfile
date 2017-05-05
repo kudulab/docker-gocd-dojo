@@ -1,13 +1,14 @@
 FROM openjdk:8-jdk
 MAINTAINER Tomasz Sętkowski <tom@ai-traders.com>
 
-COPY ide-scripts/* /usr/bin/
+RUN apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends sudo git ca-certificates && \
+  git clone --depth 1 -b 0.8.2 https://github.com/ai-traders/ide.git /tmp/ide_git && \
+  /tmp/ide_git/ide_image_scripts/src/install.sh && \
+  rm -r /tmp/ide_git && \
+  echo 'ide ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
-RUN useradd -d /home/ide -p pass -s /bin/bash -u 1000 -m ide &&\
-    chmod 755 /usr/bin/ide-fix-uid-gid.sh &&\
-    chmod 755 /usr/bin/ide-setup-identity.sh &&\
-    chmod 755 /usr/bin/entrypoint.sh &&\
-    chown ide:ide -R /home/ide
+COPY ide-scripts/* /etc/ide.d/scripts/
 
 RUN apt-get update && apt-get install -y -q \
  sudo fakeroot git nsis rpm unzip zip mercurial rake subversion wget
@@ -28,17 +29,13 @@ RUN apt-get install -y ruby-dev build-essential && \
   gem install fpm
 
 RUN mkdir -p /ide/work && chown ide:ide /ide/work
-RUN mkdir -p /ide/output && chown ide:ide /ide/output
-RUN su - ide -c "git clone https://github.com/gocd/gocd.git /ide/work"
-RUN su - ide -c "touch /ide/work/.ide-mark"
 
-ADD gocd-scripts/go-compile.sh /usr/bin/go-compile
-ADD gocd-scripts/go-build-installer.sh /usr/bin/go-build-installer
+RUN su - ide -c "git clone --depth 1 https://github.com/gocd/gocd.git /ide/work"
 
-RUN chmod 755 /usr/bin/go-compile &&\
-     chmod 755 /usr/bin/go-build-installer
-
-RUN su - ide -c "/usr/bin/go-compile"
+ENV WINDOWS_JRE_URL='https://mirrors.go.cd/local/jre-7u9-windows-i586.tar.gz'
+ENV ORACLE_JRE_LICENSE_AGREE=1
+# This will download all dependencies to /home/ide/ so that they can stay cached in image
+RUN su - ide -c "cd /ide/work && gradle clean prepare fatJar agentWindows64bitExe serverPackageDeb agentPackageDeb versionFile"
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
-CMD ["/usr/bin/go-build-installer"]
+CMD ["/bin/bash"]
