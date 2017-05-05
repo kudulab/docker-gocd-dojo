@@ -16,6 +16,10 @@ RUN apt-get update && apt-get install -y -q \
 RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash - && \
  apt-get install --yes nodejs && update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - &&\
+   echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list &&\
+   apt-get update && apt-get install -y yarn
+
 # install gradle, so that gradlew is not needed.
 ENV GRADLE_VERSION 3.1
 ENV GRADLE_HOME /usr/lib/gradle/gradle-${GRADLE_VERSION}
