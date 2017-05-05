@@ -13,7 +13,7 @@ COPY ide-scripts/* /etc/ide.d/scripts/
 RUN apt-get update && apt-get install -y -q \
  sudo fakeroot git nsis rpm unzip zip mercurial rake subversion wget
 # install nodejs, update-alternatives is needed on ubuntu to enable command 'node'
-RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - &&\
  apt-get install --yes nodejs && update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - &&\

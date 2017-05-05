@@ -2,3 +2,4 @@
 
  * Rewrite to use generic IDE image setup from AIT.
  * Throw away remote build option
+ * nodejs 6
