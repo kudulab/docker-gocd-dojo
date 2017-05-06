@@ -38,7 +38,7 @@ RUN su - ide -c "git clone --depth 1 https://github.com/gocd/gocd.git /ide/work"
 
 ENV ORACLE_JRE_LICENSE_AGREE=1
 # This will download all dependencies to /home/ide/ so that they can stay cached in image
-RUN su - ide -c "cd /ide/work && gradle clean prepare fatJar agentWindows64bitExe serverPackageDeb agentPackageDeb versionFile"
+RUN su - ide -c "cd /ide/work && gradle clean prepare"
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]
