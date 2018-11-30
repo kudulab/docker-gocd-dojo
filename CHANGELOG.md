@@ -2,6 +2,7 @@
 
  * Rebuild to upgrade nodejs
  * Updated gradle to 4.10
+ * Updated node.js to 8
 
 ### 1.0.0
 
