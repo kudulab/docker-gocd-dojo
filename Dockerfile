@@ -21,7 +21,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - &&\
    apt-get update && apt-get install -y yarn
 
 # install gradle, so that gradlew is not needed.
-ENV GRADLE_VERSION 3.1
+ENV GRADLE_VERSION 4.10
 ENV GRADLE_HOME /usr/lib/gradle/gradle-${GRADLE_VERSION}
 RUN cd /tmp &&\
   wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip &&\
@@ -34,11 +34,13 @@ RUN apt-get install -y ruby-dev build-essential && \
 
 RUN mkdir -p /ide/work && chown ide:ide /ide/work
 
-RUN su - ide -c "git clone --depth 1 https://github.com/gocd/gocd.git /ide/work"
-
 ENV ORACLE_JRE_LICENSE_AGREE=1
-# This will download all dependencies to /home/ide/ so that they can stay cached in image
-RUN su - ide -c "cd /ide/work && gradle clean prepare"
+# This will cache dependencies in the image
+RUN su - ide -c "git clone --depth 1 https://github.com/gocd/gocd.git /ide/work &&\
+  cd /ide/work &&\
+  gradle clean prepare &&\
+  rm -rf /ide/work/* &&\
+  rm -rf /ide/work/.*"
 
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

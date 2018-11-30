@@ -1,6 +1,7 @@
 ### 1.0.1
 
  * Rebuild to upgrade nodejs
+ * Updated gradle to 4.10
 
 ### 1.0.0
 
