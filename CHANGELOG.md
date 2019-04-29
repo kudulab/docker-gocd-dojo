@@ -1,3 +1,10 @@
+### 2.0.0 (2019-Apr-29)
+
+ * port from IDE to Dojo
+ * use official GoCD setup scripts
+ * switch to centos-7 to be consistent with official GoCD agents
+ * setup image on new dockerhub account `kudulab/gocd-dojo`
+
 ### 1.0.1
 
  * Rebuild to upgrade nodejs
