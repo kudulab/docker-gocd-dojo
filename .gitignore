@@ -1,3 +1,4 @@
 /image/imagerc*
 /ops/
 /Dojofile.to_be_tested
+/test/integration/test_dojo_work/gocd/
