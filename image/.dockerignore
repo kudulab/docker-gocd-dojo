@@ -1,0 +1,3 @@
+/gocd-oss-cookbooks/
+!/gocd-oss-cookbooks/provision
+!/*

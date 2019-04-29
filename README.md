@@ -1,62 +1,52 @@
 # GoCD development environment in docker
 
-This is an opinionated development environment for [GoCD](https://github.com/gocd/gocd)
-using docker image to pull all required tools.
+This is development environment for [GoCD](https://github.com/gocd/gocd) built using
+[Dojo](https://github.com/ai-traders/dojo) and [official scripts](https://github.com/gocd-contrib/gocd-oss-cookbooks)
+used by the CI agents at https://build.gocd.org
 
-This image allows to build and partially test gocd. It can be used in CI system
-or as a base for developer workstation.
+This image allows to build and test GoCD. It can be used to **build your fork or locally test a PR**.
 
-[IDE](https://github.com/ai-traders/ide) stands for Isolated development environment.
-This image conforms to *some* of the ideas in IDE project.
+# Usage
 
-## TL;DR
-
-If you have
- * a local docker host
- * the short `ide` [script](https://github.com/ai-traders/ide)
-
-Then you can build [GoCD](https://github.com/gocd/gocd) with
-
+1. [Install docker](https://docs.docker.com/install/), if you haven't already.
+2. Install Dojo, it is a self-contained binary, so just place it somewhere on the `PATH`.
+On **Linux**:
 ```bash
-echo 'IDE_DOCKER_IMAGE="tomzo/gocd-ide:latest"' > Idefile
-ide gradle clean prepare fatJar
+DOJO_VERSION=0.4.0
+wget -O dojo https://github.com/ai-traders/dojo/releases/download/${DOJO_VERSION}/dojo_linux_amd64
+sudo mv dojo /usr/local/bin
+sudo chmod +x /usr/local/bin/dojo
 ```
-
-This will pull `tomzo/gocd-ide:latest` image and build GoCD jars in docker.
-
-## Image Content
-
- * a bunch of useful packages `sudo fakeroot git nsis rpm unzip zip rake wget`
- * `subversion` and `mercurial` for testing SCMs
- * nodejs - needed for server build
- * gradle 3.1 - so that you don't need to wait for gradlew to download
- * minimal ruby setup with `fpm` for packaging
-
-### Build gocd from local workspace
-
-Let's assume `~/code/open/go/gocd` contains a checkout of [gocd](https://github.com/gocd/gocd)
-or a fork of it.
-
-Then you can run **any** gocd build command with:
+3. Checkout and `cd` into gocd project directory, then start docker container:
+```bash
+git clone https://github.com/gocd/gocd.git
+cd gocd
+dojo --image=kudulab/gocd-dojo
 ```
-docker run -ti --rm -v ~/code/open/go/gocd:/ide/work -v ~:/ide/identity:ro tomzo/gocd-ide COMMAND
+This will enter a docker container with all tools needed for building gocd. Your local copy of gocd is in current directory `/dojo/work`.
+
+In order to build GoCD, you can use `gradlew`, for example to build debian packages and generic zip distribution:
+```bash
+./gradlew clean serverPackageDeb agentPackageDeb agentGenericZip versionFile
 ```
-In non-interactive environments you should skip `-ti` option.
+You will find the artifacts in `installers/target/distributions`.
 
-Any compilation or test results will be available locally in
- the mounted directory `~/code/open/go/gocd`
+ * For more details about building GoCD please refer to the [developer documentation](https://developer.gocd.org/current/)
+ * For more details about using Dojo see the [readme](https://github.com/ai-traders/dojo)
 
-#### Building windows packages
 
-To create windows package bundled oracle jre is used.
-You set your own URLs for download with
- * WINDOWS_64BIT_JRE_URL
- * WINDOWS_32BIT_JRE_URL
+## License
 
-## Usage with IDE
+Copyright 2019 Tomasz Sętkowski
 
-`gocd` repository should contain `Idefile` with
-```
-IDE_DOCKER_IMAGE=tomzo/gocd-ide:TAG
-```
-Thus declaring exact image which is a good enough to build and develop gocd.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

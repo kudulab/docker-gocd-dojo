@@ -1,0 +1,77 @@
+format_version: 3
+pipelines:
+  docker-gocd-dojo:
+    group: gocd
+    label_template: "${git[:8]}"
+    materials:
+      git:
+        type: configrepo
+    secure_variables:
+      VAULT_TOKEN: "AES:5Sexi5i4HiB0nSyGvSwaSw==:mtlhZJ8kV7Osnvxh14hjgOhhlXPR+RuPPezxBG7CWDgLqYU3CpHVT3PIaKLxZ+Zq"
+    stages:
+      - build:
+          clean_workspace: true
+          jobs:
+            docker_image:
+              resources:
+                - docker_builder
+              artifacts:
+                - build:
+                    source: image/imagerc*
+                    destination:
+              tasks:
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - ./tasks build
+      - itest:
+          clean_workspace: true
+          jobs:
+            end_user:
+              resources:
+                - docker_builder
+              tasks:
+                - fetch:
+                    stage: build
+                    job: docker_image
+                    is_file: yes
+                    source: imagerc
+                    destination: image/
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - ./tasks itest
+      - release:
+          clean_workspace: true
+          jobs:
+            code:
+              # this could run on elastic go agent, but since all the jobs
+              # are run here on docker_builder, let's run this job there too
+              resources:
+                - docker_builder
+              tasks:
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - ./tasks release
+      - publish:
+          clean_workspace: true
+          jobs:
+            docker_image:
+              resources:
+                - docker_builder
+              tasks:
+                - fetch:
+                    stage: build
+                    job: docker_image
+                    is_file: yes
+                    source: imagerc
+                    destination: image/
+                - exec:
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - ./tasks publish
