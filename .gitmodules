@@ -1,0 +1,4 @@
+[submodule "image/gocd-oss-cookbooks"]
+	path = image/gocd-oss-cookbooks
+	url = https://github.com/tomzo/gocd-oss-cookbooks.git
+	branch = dojo
