@@ -1,3 +1,7 @@
+### 2.0.1 (2019-May-03)
+
+ * fix locale setup
+
 ### 2.0.0 (2019-Apr-29)
 
  * port from IDE to Dojo

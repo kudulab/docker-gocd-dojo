@@ -17,6 +17,7 @@ COPY bashrc /home/dojo/.bashrc
 RUN chown dojo:dojo /home/dojo/.profile /home/dojo/.bashrc
 
 COPY etc_dojo.d/scripts/* /etc/dojo.d/scripts/
+COPY etc_dojo.d/variables/* /etc/dojo.d/variables/
 
 ENTRYPOINT ["/usr/bin/tini", "-g", "--", "/usr/bin/entrypoint.sh"]
 CMD ["/bin/bash"]

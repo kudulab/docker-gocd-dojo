@@ -11,3 +11,8 @@ load '/opt/bats-assert/load.bash'
   run /bin/bash -c "dojo -c Dojofile.to_be_tested \"cd gocd && ./gradlew clean agentPackageDeb\""
   assert_equal "$status" 0
 }
+
+@test "build gocd server deb package" {
+  run /bin/bash -c "dojo -c Dojofile.to_be_tested \"cd gocd && ./gradlew clean serverPackageDeb\""
+  assert_equal "$status" 0
+}
