@@ -1,10 +1,10 @@
 FROM centos:7
 
 # Install common Dojo scripts
-ENV DOJO_VERSION=0.4.1
+ENV DOJO_VERSION=0.6.2
 RUN yum install --assumeyes \
   git sudo &&\
-  git clone --depth 1 -b ${DOJO_VERSION} https://github.com/ai-traders/dojo.git /tmp/dojo_git &&\
+  git clone --depth 1 -b ${DOJO_VERSION} https://github.com/kudulab/dojo.git /tmp/dojo_git &&\
   /tmp/dojo_git/image_scripts/src/install.sh && \
   rm -r /tmp/dojo_git
 

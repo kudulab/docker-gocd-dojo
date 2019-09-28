@@ -1,3 +1,6 @@
+### 2.1.0 (2019-Sep-28)
+Upgraded to java 11 installed with jabba.
+
 ### 2.0.1 (2019-May-03)
 
  * fix locale setup

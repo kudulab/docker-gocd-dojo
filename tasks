@@ -4,7 +4,7 @@ set -Eeuo pipefail
 
 RELEASER_VERSION="2.1.0"
 DOCKER_OPS_VERSION="2.0.0"
-SECRET_OPS_VERSION="0.6.1"
+SECRET_OPS_VERSION="0.8.0"
 
 SECRET_OPS_FILE="ops/secret-ops"
 SECRET_OPS_TAR_FILE="ops/secret-ops-${SECRET_OPS_VERSION}.tar.gz"

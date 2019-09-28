@@ -9,23 +9,25 @@ This image allows to build and test GoCD. It can be used to **build your fork or
 # Usage
 
 1. [Install docker](https://docs.docker.com/install/), if you haven't already.
-2. Install Dojo, it is a self-contained binary, so just place it somewhere on the `PATH`.
-On **Linux**:
+2. Install [Dojo](https://github.com/ai-traders/dojo), it is a self-contained binary, so just place it somewhere on the `PATH`. On OSX you can use `brew install kudulab/homebrew-dojo-osx/dojo`.
+
+**On Linux**
 ```bash
-DOJO_VERSION=0.4.0
-wget -O dojo https://github.com/ai-traders/dojo/releases/download/${DOJO_VERSION}/dojo_linux_amd64
+DOJO_VERSION=0.6.2
+wget -O dojo https://github.com/kudulab/dojo/releases/download/${DOJO_VERSION}/dojo_linux_amd64
 sudo mv dojo /usr/local/bin
 sudo chmod +x /usr/local/bin/dojo
 ```
+
 3. Checkout and `cd` into gocd project directory, then start docker container:
 ```bash
 git clone https://github.com/gocd/gocd.git
 cd gocd
-dojo --image=kudulab/gocd-dojo
+dojo
 ```
-This will enter a docker container with all tools needed for building gocd. Your local copy of gocd is in current directory `/dojo/work`.
+This will enter a docker container with all tools needed for building GoCD. Your local copy of gocd is in current directory `/dojo/work`.
 
-In order to build GoCD, you can use `gradlew`, for example to build debian packages and generic zip distribution:
+In order to build GoCD, you can use `./gradlew`. For example, to build debian packages and generic zip distribution:
 ```bash
 ./gradlew clean serverPackageDeb agentPackageDeb agentGenericZip versionFile
 ```

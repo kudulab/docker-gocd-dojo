@@ -1,3 +1,5 @@
 PS1='\[\033[01;32m\]\u@\h\[\033[00m\](gocd-dojo):\[\033[01;34m\]\w\[\033[00m\]\$ '
+source "${HOME}/.jabba/jabba.sh"
+jabba use "openjdk@1.${JAVA_VERSION:-11}"
 # this variable is set by common Dojo image scripts
 cd "${dojo_work}"
