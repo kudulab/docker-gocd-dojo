@@ -9,15 +9,7 @@ This image allows to build and test GoCD. It can be used to **build your fork or
 # Usage
 
 1. [Install docker](https://docs.docker.com/install/), if you haven't already.
-2. Install [Dojo](https://github.com/ai-traders/dojo), it is a self-contained binary, so just place it somewhere on the `PATH`. On OSX you can use `brew install kudulab/homebrew-dojo-osx/dojo`.
-
-**On Linux**
-```bash
-DOJO_VERSION=0.6.2
-wget -O dojo https://github.com/kudulab/dojo/releases/download/${DOJO_VERSION}/dojo_linux_amd64
-sudo mv dojo /usr/local/bin
-sudo chmod +x /usr/local/bin/dojo
-```
+2. Install [Dojo](https://github.com/kudulab/dojo#installation), it is a self-contained binary, so just place it somewhere on the `PATH`. On OSX you can use `brew install kudulab/homebrew-dojo-osx/dojo`.
 
 3. Checkout and `cd` into gocd project directory, then start docker container:
 ```bash
@@ -39,7 +31,7 @@ You will find the artifacts in `installers/target/distributions`.
 
 ## License
 
-Copyright 2019 Tomasz Sętkowski
+Copyright 2020 Tomasz Sętkowski
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
