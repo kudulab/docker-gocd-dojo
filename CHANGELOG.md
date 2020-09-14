@@ -1,3 +1,9 @@
+### 2.2.0 (2020-Sep-14)
+
+Upgrades to support GoCD 20.8.0:
+ - centos:8 as base image
+ - nodejs upgrade
+
 ### 2.1.0 (2019-Sep-28)
 Upgraded to java 11 installed with jabba.
 
